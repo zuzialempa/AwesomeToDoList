@@ -1,0 +1,68 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "Atomics": "readable",
+        "SharedArrayBuffer": "readable"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "linebreak-style": [ "error", "windows" ],
+        "quotes": [ "error", "single" ],
+        "semi": [ "error", "always" ],
+        "keyword-spacing": "error",
+        "space-before-function-paren": "error",
+        "eqeqeq": "error",
+        "comma-spacing": "error",
+        "brace-style": "error",
+        "no-multiple-empty-lines" : "error",
+        "block-spacing": "error",
+        "camelcase": "error",
+        "comma-dangle": "error",
+        "comma-style": "error",
+        "dot-location": "error",
+        "eol-last": "error",
+        "func-call-spacing":"error",
+        "key-spacing":"error",
+        "no-unused-vars":"off",
+        "constructor-super":"error",
+        "no-const-assign":"error",
+        "no-constant-condition":"error",
+        "no-dupe-class-members":"warn",
+        "no-dupe-keys":"warn",
+        "no-duplicate-case":"error",
+        "no-duplicate-imports":"error",
+        "no-extend-native":"error",
+        "no-multi-spaces":"error",
+        "no-redeclare":"error",
+        "no-self-compare":"error",
+        "no-shadow-restricted-names":"error",
+        "no-sparse-arrays":"error",
+        "no-template-curly-in-string":"error",
+        "no-this-before-super":"error",
+        "no-trailing-spaces":"error",
+        "no-unreachable":"error",
+        "no-useless-constructor":"error",
+        "no-whitespace-before-property":"error",
+        "rest-spread-spacing":"error",
+        "semi-spacing":"error",
+        "space-in-parens":"error",
+        "template-curly-spacing":"error",
+        "valid-typeof":"error",
+        "no-console":"off",
+        "react/prop-types":"error"
+    }
+}
