@@ -22,7 +22,7 @@ class List extends Component {
 		};
     }
     handleOnEditDone (changeLongPressedCheckBox, element) {
-        const list = this.state.list;
+        const { list } = this.state;
         list[list.indexOf(list.find(item => item.id === element.id))].text = element.text;
         changeLongPressedCheckBox(defaultObject);
         this.setState({list: list});
@@ -39,17 +39,19 @@ class List extends Component {
             addNewVisibility: false
         });
     }
-    handleOnEditDelete (changeLongPressedCheckBox, element) {
-        const list = this.state.list;
-        const inList = list.indexOf(element) + 1;
+    async handleOnEditDelete (changeLongPressedCheckBox, element) {
+        const { list } = this.state;
+        const index = list.indexOf(element);
         changeLongPressedCheckBox(defaultObject);
-        this.setState({ list: list.slice(inList) });
+        const newList = list.slice(0, index).concat(list.slice(index + 1, list.length));
+        await this.setState({ list: newList });
     }
 	render (){
+        const { list, addNewVisibility } = this.state;
 		return (
             <ScrollView style={styles.scrollViewStyle}>
                     <StatedCheckBoxList
-                        titles={this.state.list}
+                        titles={list}
                     />
                     <Button
                         onPress={this.onPressedAddElement}
@@ -57,8 +59,8 @@ class List extends Component {
                         containerStyle={styles.buttonStyle}
                         accessibilityLabel='Add new TODO element'
                     />
-                    {this.state.addNewVisibility && <AddNewOverlay
-                        isVisible={this.state.addNewVisibility}
+                    {addNewVisibility && <AddNewOverlay
+                        isVisible={addNewVisibility}
                         onPressDone={this.onPressDone}
                     />}
                     <FunctionContext.Consumer>
