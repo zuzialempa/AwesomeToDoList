@@ -40,40 +40,40 @@ class List extends Component {
     }
 	render (){
 		return (
-            <ScrollView style={styles.scrollViewStyle}>
-                    <StatedCheckBoxList
-                        titles={this.state.list}
-                    />
-                    <Button
-                        onPress={this.onPressedAddElement}
-                        title='Add new'
-                        containerStyle={styles.buttonStyle}
-                        accessibilityLabel='Add new TODO element'
-                    />
-                    {this.state.addNewVisibility && <AddNewOverlay
-                        isVisible={this.state.addNewVisibility}
-                        onPressDone={this.onPressDone}
-                    />}
-                    <FunctionContext.Consumer>
-                        {value => {
-                            return <EditOverlay
-                                isVisible={value.longPressedCheckBox.text !== ''}
-                                title={value.longPressedCheckBox}
-                                onPressDone={(event, element) => this.handleOnEditDone(value.changeLongPressedCheckBox, element)}
-                            />;
-                        }}
-                    </FunctionContext.Consumer>
-            </ScrollView>
+            <>
+                <StatedCheckBoxList
+                    titles={this.state.list}
+                />
+                <Button
+                    onPress={this.onPressedAddElement}
+                    title='Add new'
+                    containerStyle={styles.buttonStyle}
+                    accessibilityLabel='Add new TODO element'
+                />
+                {this.state.addNewVisibility && <AddNewOverlay
+                    isVisible={this.state.addNewVisibility}
+                    onPressDone={this.onPressDone}
+                />}
+                <FunctionContext.Consumer>
+                    {value => {
+                        return <EditOverlay
+                            isVisible={value.longPressedCheckBox.text !== ''}
+                            title={value.longPressedCheckBox}
+                            onPressDone={(event, element) => this.handleOnEditDone(value.changeLongPressedCheckBox, element)}
+                        />;
+                    }}
+                </FunctionContext.Consumer>
+            </>
 		);
 	}
 }
 const styles = StyleSheet.create({
-    scrollViewStyle: {
-        width: '95%',
-        marginTop: '10%'
-    },
     buttonStyle: {
-        backgroundColor: '#841584'
+        backgroundColor: '#841584',
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        right: '5%',
+        bottom: '5%'
     }
 });
 export default List;
