@@ -35,7 +35,7 @@ class StatedCheckBox extends Component {
 }
 const styles = StyleSheet.create({
 	checkBox: {
-		borderRadius: 5
+        borderRadius: 5
 	}
 });
 StatedCheckBox.propTypes = {
