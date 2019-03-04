@@ -36,7 +36,13 @@ class EditOverlay extends Component {
                          onPress={event => this.props.onPressDone(event, this.state.textValue)}
                          title='Done'
                          buttonStyle={ styles.doneButton }
-                         accessibilityLabel='Add new TODO element'
+                         accessibilityLabel='Edit TODO'
+                    />
+                    <Button
+                         onPress={event => this.props.onPressDelete(event, this.state.textValue)}
+                         title='Delete'
+                         buttonStyle={ styles.doneButton }
+                         accessibilityLabel='Delete TODO'
                     />
                 </>
             </Overlay>
@@ -59,6 +65,7 @@ EditOverlay.defaultProps = {
 EditOverlay.propTypes = {
     title: PropTypes.object,
     isVisible: PropTypes.bool,
-    onPressDone: PropTypes.func
+    onPressDone: PropTypes.func,
+    onPressDelete: PropTypes.func
 };
 export default EditOverlay;

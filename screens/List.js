@@ -14,6 +14,7 @@ class List extends Component {
 		super(props);
         this.onPressedAddElement = this.onPressedAddElement.bind(this);
         this.onPressDone = this.onPressDone.bind(this);
+        this.handleOnEditDelete = this.handleOnEditDelete.bind(this);
         this.handleOnEditDone = this.handleOnEditDone.bind(this);
 		this.state = {
             list: [{text: 'example', id: 0}],
@@ -21,7 +22,7 @@ class List extends Component {
 		};
     }
     handleOnEditDone (changeLongPressedCheckBox, element) {
-        const list = this.state.list;
+        const { list } = this.state;
         list[list.indexOf(list.find(item => item.id === element.id))].text = element.text;
         changeLongPressedCheckBox(defaultObject);
         this.setState({list: list});
@@ -30,15 +31,23 @@ class List extends Component {
         this.setState({addNewVisibility: true});
     }
     onPressDone (event, text) {
-        const list = this.state.list;
-        const newId = this.state.list[this.state.list.length - 1].id + 1;
+        const { list } = this.state;
+        const newId = list.length === 0 ? 0 : list[list.length - 1].id + 1;
         list.push({text: text, id: newId});
         this.setState({
             list: list,
             addNewVisibility: false
         });
     }
+    async handleOnEditDelete (changeLongPressedCheckBox, element) {
+        const { list } = this.state;
+        const index = list.indexOf(element);
+        changeLongPressedCheckBox(defaultObject);
+        const newList = list.slice(0, index).concat(list.slice(index + 1, list.length));
+        await this.setState({ list: newList });
+    }
 	render (){
+        const { list, addNewVisibility } = this.state;
 		return (
             <>
                 <StatedCheckBoxList
@@ -60,6 +69,7 @@ class List extends Component {
                             isVisible={value.longPressedCheckBox.text !== ''}
                             title={value.longPressedCheckBox}
                             onPressDone={(event, element) => this.handleOnEditDone(value.changeLongPressedCheckBox, element)}
+                            onPressDelete={(event, element) => this.handleOnEditDelete(value.changeLongPressedCheckBox, element)}
                         />;
                     }}
                 </FunctionContext.Consumer>

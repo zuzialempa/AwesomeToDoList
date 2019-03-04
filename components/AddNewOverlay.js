@@ -13,7 +13,6 @@ class AddNewOverlay extends Component {
     render () {
         const { onPressDone } = this.props;
         const { textValue } = this.state;
-        const text = 'newwwwwww';
         return (
             <Overlay
                 isVisible={this.props.isVisible}
