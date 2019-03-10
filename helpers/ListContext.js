@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import checkBoxStates from '../configuration/StatedCheckBox';
 import { PropTypes } from 'prop-types';
-const FunctionContext = React.createContext();
-class FunctionContextProvider extends Component {
+const ListContext = React.createContext();
+class ListContextProvider extends Component {
     constructor (props) {
         super(props);
         this.changeLongPressedCheckBox=this.changeLongPressedCheckBox.bind(this);
         this.handleOnPress=this.handleOnPress.bind(this);
         this.state = {
+            list: [{text: 'example', id: 0, status: checkBoxStates[0]}],
             checkBoxStates: checkBoxStates,
             longPressedCheckBox: {
                 text: '',
-                id: -1
+                id: -1,
+                status: { }
             },
             changeLongPressedCheckBox: this.changeLongPressedCheckBox,
             handleOnPress: this.handleOnPress
@@ -29,17 +31,17 @@ class FunctionContextProvider extends Component {
     render () {
         const { children } = this.props;
         return (
-            <FunctionContext.Provider value={this.state}>
+            <ListContext.Provider value={this.state}>
                 { children }
-            </FunctionContext.Provider>
+            </ListContext.Provider>
         );
     }
 }
-FunctionContextProvider.propTypes = {
+ListContextProvider.propTypes = {
     children: PropTypes.object
 };
 export {
-    FunctionContext,
-    FunctionContextProvider
+    ListContext,
+    ListContextProvider
 };
 

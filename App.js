@@ -1,21 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import List from './screens/List';
-import { FunctionContextProvider } from './helpers/FunctionContext';
+import { ListContextProvider } from './helpers/ListContext';
 
 export default class App extends React.Component {
-
 	render () {
 		return (
-			<FunctionContextProvider>
+			<ListContextProvider>
 				<View style={styles.container}>
 					<List/>
 				</View>
-			</FunctionContextProvider>
+			</ListContextProvider>
 		);
-
 	}
-
 }
 
 const styles = StyleSheet.create({

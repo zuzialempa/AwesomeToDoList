@@ -12,8 +12,7 @@ const StatedCheckBoxList = ({ titles }) => {
 };
 const styles = StyleSheet.create({
     scrollViewStyle: {
-        width: '95%',
-        marginTop: '10%'
+        width: '95%'
     }
 });
 StatedCheckBoxList.propTypes = {

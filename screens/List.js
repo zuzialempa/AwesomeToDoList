@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions, View, Text } from 'react-native';
+import Accordion from 'react-native-collapsible/Accordion';
 import { Button } from 'react-native-elements';
 import StatedCheckBoxList from '../components/StatedCheckBoxList';
 import AddNewOverlay from '../components/AddNewOverlay';
-import { FunctionContext } from '../helpers/FunctionContext';
+import { ListContext } from '../helpers/ListContext';
 import EditOverlay from '../components/EditOverlay';
+import checkBoxStates from '../configuration/StatedCheckBox';
 const defaultObject = {
     text: '',
     id: -1
 };
+const {height, width} = Dimensions.get('window');
+const sections = [
+    'todo', 'done'
+];
 class List extends Component {
 	constructor (props){
 		super(props);
@@ -16,9 +22,11 @@ class List extends Component {
         this.onPressDone = this.onPressDone.bind(this);
         this.handleOnEditDelete = this.handleOnEditDelete.bind(this);
         this.handleOnEditDone = this.handleOnEditDone.bind(this);
-		this.state = {
+        this.childToRender = this.childToRender.bind(this);
+        this.state = {
             list: [{text: 'example', id: 0}],
-            addNewVisibility: false
+            addNewVisibility: false,
+            activeSections: ['todo']
 		};
     }
     handleOnEditDone (changeLongPressedCheckBox, element) {
@@ -33,7 +41,7 @@ class List extends Component {
     onPressDone (event, text) {
         const { list } = this.state;
         const newId = list.length === 0 ? 0 : list[list.length - 1].id + 1;
-        list.push({text: text, id: newId});
+        list.push({text: text, id: newId, status: checkBoxStates[0]});
         this.setState({
             list: list,
             addNewVisibility: false
@@ -46,24 +54,18 @@ class List extends Component {
         const newList = list.slice(0, index).concat(list.slice(index + 1, list.length));
         await this.setState({ list: newList });
     }
-	render (){
+    childToRender () {
         const { list, addNewVisibility } = this.state;
 		return (
             <>
                 <StatedCheckBoxList
-                    titles={this.state.list}
+                    titles={list}
                 />
-                <Button
-                    onPress={this.onPressedAddElement}
-                    title='Add new'
-                    containerStyle={styles.buttonStyle}
-                    accessibilityLabel='Add new TODO element'
-                />
-                {this.state.addNewVisibility && <AddNewOverlay
-                    isVisible={this.state.addNewVisibility}
+                {addNewVisibility && <AddNewOverlay
+                    isVisible={addNewVisibility}
                     onPressDone={this.onPressDone}
                 />}
-                <FunctionContext.Consumer>
+                <ListContext.Consumer>
                     {value => {
                         return <EditOverlay
                             isVisible={value.longPressedCheckBox.text !== ''}
@@ -72,7 +74,36 @@ class List extends Component {
                             onPressDelete={(event, element) => this.handleOnEditDelete(value.changeLongPressedCheckBox, element)}
                         />;
                     }}
-                </FunctionContext.Consumer>
+                </ListContext.Consumer>
+            </>
+		);
+    }
+	render (){
+        const { list, addNewVisibility } = this.state;
+		return (
+            <>
+                <Accordion
+                    sections={sections}
+                    activeSections={this.state.activeSections}
+                    renderHeader={(section) => {
+                        return (
+                            <View style={styles.collapseHeaderStyle}>
+                            <Text>{section}</Text>
+                            </View>
+                        );
+                    }}
+                    underlayColor='#DCDCDC'
+                    renderContent={this.childToRender}
+                    onChange={(activeSections) => {
+                        this.setState({ activeSections });
+                    }}
+                />
+                <Button
+                    onPress={this.onPressedAddElement}
+                    title='Add new'
+                    containerStyle={styles.buttonStyle}
+                    accessibilityLabel='Add new TODO element'
+                />
             </>
 		);
 	}
@@ -84,6 +115,11 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         right: '5%',
         bottom: '5%'
+    },
+    collapseHeaderStyle: {
+        width: 0.95*width,
+        margin: '2%',
+        padding: '2%'
     }
 });
 export default List;

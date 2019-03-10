@@ -3,7 +3,7 @@ import { CheckBox } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import checkBoxStates from '../configuration/StatedCheckBox';
 import PropTypes from 'prop-types';
-import { FunctionContext } from '../helpers/FunctionContext';
+import { ListContext } from '../helpers/ListContext';
 
 class StatedCheckBox extends Component {
 	constructor (props) {
@@ -15,7 +15,7 @@ class StatedCheckBox extends Component {
 	render () {
 		const { title } = this.props;
 		return (
-            <FunctionContext.Consumer>
+            <ListContext.Consumer>
                 { value =>
                     <CheckBox
                         {...this.state.checkBoxState}
@@ -29,7 +29,7 @@ class StatedCheckBox extends Component {
                         onLongPress={event => value.changeLongPressedCheckBox(title)}
                     />
                 }
-            </FunctionContext.Consumer>
+            </ListContext.Consumer>
 		);
 	}
 }

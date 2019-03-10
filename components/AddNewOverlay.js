@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Button, Overlay, Input } from 'react-native-elements';
 import { PropTypes } from 'prop-types';
-var {height, width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 class AddNewOverlay extends Component {
     constructor (props) {
         super(props);
@@ -18,20 +18,18 @@ class AddNewOverlay extends Component {
                 isVisible={this.props.isVisible}
                 overlayStyle={styles.overlayStyle}
             >
-                <>
-                    <Input
-                        placeholder='write your TODO'
-                        onChange={event => {
-                            this.setState({textValue: event.nativeEvent.text});
-                        }}
-                    />
-                    <Button
-                         onPress={event => onPressDone(event, textValue)}
-                         title='Done'
-                         buttonStyle={ styles.doneButton }
-                         accessibilityLabel='Add new TODO element'
-                    />
-                </>
+                <Input
+                    placeholder='write your TODO'
+                    onChange={event => {
+                        this.setState({textValue: event.nativeEvent.text});
+                    }}
+                />
+                <Button
+                    onPress={event => onPressDone(event, textValue)}
+                    title='Done'
+                    buttonStyle={ styles.doneButton }
+                    accessibilityLabel='Add new TODO element'
+                />
             </Overlay>
         );
     }
