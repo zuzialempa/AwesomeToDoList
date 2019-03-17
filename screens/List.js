@@ -4,9 +4,9 @@ import Accordion from 'react-native-collapsible/Accordion';
 import { Button } from 'react-native-elements';
 import StatedCheckBoxList from '../components/StatedCheckBoxList';
 import AddNewOverlay from '../components/AddNewOverlay';
-import { ListContext } from '../helpers/ListContext';
 import EditOverlay from '../components/EditOverlay';
 import checkBoxStates from '../configuration/StatedCheckBox';
+
 const defaultObject = {
     text: '',
     id: -1
@@ -15,30 +15,51 @@ const {height, width} = Dimensions.get('window');
 const sections = [
     'todo', 'done'
 ];
+
 class List extends Component {
 	constructor (props){
 		super(props);
         this.onPressedAddElement = this.onPressedAddElement.bind(this);
-        this.onPressDone = this.onPressDone.bind(this);
+        this.onPressDoneAtAddNew = this.onPressDoneAtAddNew.bind(this);
         this.handleOnEditDelete = this.handleOnEditDelete.bind(this);
         this.handleOnEditDone = this.handleOnEditDone.bind(this);
         this.childToRender = this.childToRender.bind(this);
+        this.handleOnCheckboxPress = this.handleOnCheckboxPress.bind(this);
+        this.handleLongPress = this.handleLongPress.bind(this);
         this.state = {
-            list: [{text: 'example', id: 0}, {text: 'example', id: 1}, {text: 'example', id: 2}, {text: 'example', id: 3}],
+            list: [
+                {text: 'example', id: 0, status: checkBoxStates[0]},
+                {text: 'example', id: 1, status: checkBoxStates[0]},
+                {text: 'example', id: 2, status: checkBoxStates[0]},
+                {text: 'example', id: 3, status: checkBoxStates[0]}
+            ],
             addNewVisibility: false,
-            activeSections: ['todo']
+            addEditVisibility: false,
+            activeSections: ['todo'],
+            longPressedCheckBox: {...defaultObject}
 		};
     }
-    handleOnEditDone (changeLongPressedCheckBox, element) {
+    handleOnCheckboxPress (checkbox) {
+        const { list } = this.state;
+        const indexOfCurrentState = checkBoxStates.indexOf(checkbox.status);
+        const indexOfNextState = indexOfCurrentState === checkBoxStates.length - 1 ? 0 : indexOfCurrentState + 1;
+        const indexOfCheckbox = list.indexOf(checkbox);
+        list[indexOfCheckbox].status = checkBoxStates[indexOfNextState];
+        this.setState({list: list});
+    }
+    handleLongPress (checkbox) {
+        this.setState({longPressedCheckBox: checkbox, addEditVisibility: true});
+    }
+    handleOnEditDone (element) {
         const { list } = this.state;
         list[list.indexOf(list.find(item => item.id === element.id))].text = element.text;
-        changeLongPressedCheckBox(defaultObject);
+        this.handleLongPress(defaultObject);
         this.setState({list: list});
     }
 	onPressedAddElement (){
         this.setState({addNewVisibility: true});
     }
-    onPressDone (event, text) {
+    onPressDoneAtAddNew (event, text) {
         const { list } = this.state;
         const newId = list.length === 0 ? 0 : list[list.length - 1].id + 1;
         list.push({text: text, id: newId, status: checkBoxStates[0]});
@@ -47,10 +68,10 @@ class List extends Component {
             addNewVisibility: false
         });
     }
-    async handleOnEditDelete (changeLongPressedCheckBox, element) {
+    async handleOnEditDelete (element) {
         const { list } = this.state;
         const index = list.indexOf(element);
-        changeLongPressedCheckBox(defaultObject);
+        this.handleLongPress(defaultObject);
         const newList = list.slice(0, index).concat(list.slice(index + 1, list.length));
         await this.setState({ list: newList });
     }
@@ -59,15 +80,19 @@ class List extends Component {
 		return (
             <StatedCheckBoxList
                 titles={list}
+                handleOnPress={this.handleOnCheckboxPress}
+                handleLongPress={this.handleLongPress}
             />
 		);
     }
 	render (){
-        const { list, addNewVisibility } = this.state;
+        const { list, addNewVisibility, longPressedCheckBox, addEditVisibility } = this.state;
 		return (
             <ScrollView style={styles.scrollViewStyle}>
                 <StatedCheckBoxList
                     titles={list}
+                    handleOnPress={this.handleOnCheckboxPress}
+                    handleLongPress={this.handleLongPress}
                 />
                 <Accordion
                     sections={sections}
@@ -87,18 +112,14 @@ class List extends Component {
                 />
                 {addNewVisibility && <AddNewOverlay
                     isVisible={addNewVisibility}
-                    onPressDone={this.onPressDone}
+                    onPressDone={this.onPressDoneAtAddNew}
                 />}
-                <ListContext.Consumer>
-                    {value => {
-                        return <EditOverlay
-                            isVisible={value.longPressedCheckBox.text !== ''}
-                            title={value.longPressedCheckBox}
-                            onPressDone={(event, element) => this.handleOnEditDone(value.changeLongPressedCheckBox, element)}
-                            onPressDelete={(event, element) => this.handleOnEditDelete(value.changeLongPressedCheckBox, element)}
-                        />;
-                    }}
-                </ListContext.Consumer>
+                {addEditVisibility && <EditOverlay
+                    isVisible={longPressedCheckBox.text !== ''}
+                    title={longPressedCheckBox}
+                    onPressDone={(event, element) => this.handleOnEditDone(element)}
+                    onPressDelete={(event, element) => this.handleOnEditDelete(element)}
+                />}
                 <Button
                     onPress={this.onPressedAddElement}
                     title='Add new'
@@ -115,7 +136,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'flex-end',
         right: '5%',
-        // bottom: '5%'
         top: 0.8 * height
     },
     collapseHeaderStyle: {
