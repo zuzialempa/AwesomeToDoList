@@ -3,12 +3,17 @@ import { ScrollView, StyleSheet } from 'react-native';
 import StatedCheckBox from '../components/StatedCheckBox';
 import PropTypes from 'prop-types';
 
-const StatedCheckBoxList = ({ titles }) => {
-    return (
-            // <ScrollView style={styles.scrollViewStyle}>
-                titles.map(title => <StatedCheckBox title={title} key={title.id+title.text}/>)
-            // </ScrollView>
-        );
+const StatedCheckBoxList = ({ titles, handleOnPress, handleLongPress }) => {
+        return (
+                // <ScrollView style={styles.scrollViewStyle}>
+                    titles.map(title => <StatedCheckBox
+                                            title={title}
+                                            key={title.id+title.text}
+                                            handleOnPress={handleOnPress}
+                                            handleLongPress={handleLongPress}
+                                        />)
+                // </ScrollView>
+            );
 };
 const styles = StyleSheet.create({
     scrollViewStyle: {
