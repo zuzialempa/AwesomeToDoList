@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 const StatedCheckBoxList = ({ titles }) => {
     return (
-            <ScrollView style={styles.scrollViewStyle}>
-                {titles.map(title => <StatedCheckBox title={title} key={title.id+title.text}/>)}
-            </ScrollView>
+            // <ScrollView style={styles.scrollViewStyle}>
+                titles.map(title => <StatedCheckBox title={title} key={title.id+title.text}/>)
+            // </ScrollView>
         );
 };
 const styles = StyleSheet.create({

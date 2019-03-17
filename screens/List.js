@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, View, Text } from 'react-native';
+import { StyleSheet, Dimensions, View, Text, ScrollView } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import { Button } from 'react-native-elements';
 import StatedCheckBoxList from '../components/StatedCheckBoxList';
@@ -24,7 +24,7 @@ class List extends Component {
         this.handleOnEditDone = this.handleOnEditDone.bind(this);
         this.childToRender = this.childToRender.bind(this);
         this.state = {
-            list: [{text: 'example', id: 0}],
+            list: [{text: 'example', id: 0}, {text: 'example', id: 1}, {text: 'example', id: 2}, {text: 'example', id: 3}],
             addNewVisibility: false,
             activeSections: ['todo']
 		};
@@ -55,33 +55,20 @@ class List extends Component {
         await this.setState({ list: newList });
     }
     childToRender () {
-        const { list, addNewVisibility } = this.state;
+        const { list } = this.state;
 		return (
-            <>
-                <StatedCheckBoxList
-                    titles={list}
-                />
-                {addNewVisibility && <AddNewOverlay
-                    isVisible={addNewVisibility}
-                    onPressDone={this.onPressDone}
-                />}
-                <ListContext.Consumer>
-                    {value => {
-                        return <EditOverlay
-                            isVisible={value.longPressedCheckBox.text !== ''}
-                            title={value.longPressedCheckBox}
-                            onPressDone={(event, element) => this.handleOnEditDone(value.changeLongPressedCheckBox, element)}
-                            onPressDelete={(event, element) => this.handleOnEditDelete(value.changeLongPressedCheckBox, element)}
-                        />;
-                    }}
-                </ListContext.Consumer>
-            </>
+            <StatedCheckBoxList
+                titles={list}
+            />
 		);
     }
 	render (){
         const { list, addNewVisibility } = this.state;
 		return (
-            <>
+            <ScrollView style={styles.scrollViewStyle}>
+                <StatedCheckBoxList
+                    titles={list}
+                />
                 <Accordion
                     sections={sections}
                     activeSections={this.state.activeSections}
@@ -98,13 +85,27 @@ class List extends Component {
                         this.setState({ activeSections });
                     }}
                 />
+                {addNewVisibility && <AddNewOverlay
+                    isVisible={addNewVisibility}
+                    onPressDone={this.onPressDone}
+                />}
+                <ListContext.Consumer>
+                    {value => {
+                        return <EditOverlay
+                            isVisible={value.longPressedCheckBox.text !== ''}
+                            title={value.longPressedCheckBox}
+                            onPressDone={(event, element) => this.handleOnEditDone(value.changeLongPressedCheckBox, element)}
+                            onPressDelete={(event, element) => this.handleOnEditDelete(value.changeLongPressedCheckBox, element)}
+                        />;
+                    }}
+                </ListContext.Consumer>
                 <Button
                     onPress={this.onPressedAddElement}
                     title='Add new'
                     containerStyle={styles.buttonStyle}
                     accessibilityLabel='Add new TODO element'
                 />
-            </>
+            </ScrollView>
 		);
 	}
 }
@@ -114,12 +115,18 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'flex-end',
         right: '5%',
-        bottom: '5%'
+        // bottom: '5%'
+        top: 0.8 * height
     },
     collapseHeaderStyle: {
         width: 0.95*width,
         margin: '2%',
         padding: '2%'
+    },
+    scrollViewStyle: {
+        top: '5%',
+        width: '95%',
+        height: height
     }
 });
 export default List;
