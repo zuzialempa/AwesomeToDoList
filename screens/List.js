@@ -66,7 +66,7 @@ class List extends Component {
                 <FunctionContext.Consumer>
                     {value => {
                         return <EditOverlay
-                            isVisible={value.longPressedCheckBox.text !== ''}
+                            isVisible={value.longPressedCheckBox.id !== -1}
                             title={value.longPressedCheckBox}
                             onPressDone={(event, element) => this.handleOnEditDone(value.changeLongPressedCheckBox, element)}
                             onPressDelete={(event, element) => this.handleOnEditDelete(value.changeLongPressedCheckBox, element)}

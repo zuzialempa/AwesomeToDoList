@@ -20,7 +20,7 @@ class StatedCheckBox extends Component {
                     <CheckBox
                         {...this.state.checkBoxState}
                         containerStyle ={styles.checkBox}
-                        title={title.text}
+                        title={title.text === '' ? ' ' : title.text}
                         onPress={event => {
                             this.setState(state => {
                                 return {checkBoxState: value.handleOnPress(state.checkBoxState)};
