@@ -18,18 +18,20 @@ class AddNewOverlay extends Component {
                 isVisible={this.props.isVisible}
                 overlayStyle={styles.overlayStyle}
             >
-                <Input
-                    placeholder='write your TODO'
-                    onChange={event => {
-                        this.setState({textValue: event.nativeEvent.text});
-                    }}
-                />
-                <Button
-                    onPress={event => onPressDone(event, textValue)}
-                    title='Done'
-                    buttonStyle={ styles.doneButton }
-                    accessibilityLabel='Add new TODO element'
-                />
+                <>
+                    <Input
+                        placeholder='write your TODO'
+                        onChange={event => {
+                            this.setState({textValue: event.nativeEvent.text});
+                        }}
+                    />
+                    <Button
+                        onPress={event => onPressDone(event, textValue)}
+                        title='Done'
+                        buttonStyle={ styles.doneButton }
+                        accessibilityLabel='Add new TODO element'
+                    />
+                </>
             </Overlay>
         );
     }
