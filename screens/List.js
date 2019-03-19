@@ -84,7 +84,7 @@ class List extends Component {
                 handleOnPress={this.handleOnCheckboxPress}
                 handleLongPress={this.handleLongPress}
             />
-		);
+        );
     }
 	render (){
         const { list, addNewVisibility, longPressedCheckBox, addEditVisibility, activeSections } = this.state;
