@@ -7,7 +7,7 @@ const StatedCheckBox = ({ title, handleOnPress, handleLongPress }) => {
     return <CheckBox
             {...title.status}
             containerStyle ={styles.checkBox}
-            title={title.text}
+            title={title.text === '' ? ' ' : title.text}
             onPress={event => handleOnPress(title)}
             onLongPress={event => handleLongPress(title)}
         />;

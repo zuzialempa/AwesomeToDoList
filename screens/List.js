@@ -54,7 +54,7 @@ class List extends Component {
         const { list } = this.state;
         list[list.indexOf(list.find(item => item.id === element.id))].text = element.text;
         this.handleLongPress(defaultObject);
-        this.setState({list: list});
+        this.setState({list: list, addEditVisibility: false});
     }
 	onPressedAddElement (){
         this.setState({addNewVisibility: true});
@@ -73,7 +73,7 @@ class List extends Component {
         const index = list.indexOf(element);
         this.handleLongPress(defaultObject);
         const newList = list.slice(0, index).concat(list.slice(index + 1, list.length));
-        await this.setState({ list: newList });
+        await this.setState({ list: newList, addEditVisibility: false });
     }
     childToRender () {
         const { list } = this.state;
@@ -90,7 +90,7 @@ class List extends Component {
         const { list, addNewVisibility, longPressedCheckBox, addEditVisibility, activeSections } = this.state;
 		return (
             <>
-                <ScrollView style={styles.scrollViewStyle}>
+                <ScrollView style={styles.scrollViewStyle} keyboardShouldPersistTaps={'handled'}>
                     <StatedCheckBoxList
                     titles={list.filter(item => item.status !== checkBoxStates[checkBoxStates.length - 1])}
                         handleOnPress={this.handleOnCheckboxPress}
