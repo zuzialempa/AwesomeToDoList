@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, View, Text, ScrollView } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import StatedCheckBoxList from '../components/StatedCheckBoxList';
 import AddNewOverlay from '../components/AddNewOverlay';
 import EditOverlay from '../components/EditOverlay';
@@ -102,7 +102,10 @@ class List extends Component {
                         renderHeader={(section) => {
                             return (
                                 <View style={styles.collapseHeaderStyle}>
-                                <Text>{section}</Text>
+                                    <Text>{section}</Text>
+                                    <Icon
+                                        name='keyboard-arrow-down'
+                                    />
                                 </View>
                             );
                         }}
@@ -142,14 +145,24 @@ const styles = StyleSheet.create({
         bottom: '5%'
     },
     collapseHeaderStyle: {
-        width: 0.95*width,
-        margin: '2%',
-        padding: '2%'
+        width: width,
+        paddingTop: '2%',
+        paddingBottom: '2%',
+        paddingRight: '4%',
+        paddingLeft: '4%',
+        backgroundColor: 'white',
+        borderBottomWidth: 2,
+        borderBottomColor: '#CFCFCF',
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between'
     },
     scrollViewStyle: {
         top: '5%',
-        width: '95%',
-        height: height
+        width: '100%',
+        height: height,
+        backgroundColor: '#F1F1F1'
     }
 });
 export default List;
