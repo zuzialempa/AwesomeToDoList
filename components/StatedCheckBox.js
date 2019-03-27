@@ -14,7 +14,8 @@ const StatedCheckBox = ({ title, handleOnPress, handleLongPress }) => {
 };
 const styles = StyleSheet.create({
 	checkBox: {
-        borderRadius: 5
+        borderRadius: 5,
+        backgroundColor: 'white'
 	}
 });
 StatedCheckBox.propTypes = {

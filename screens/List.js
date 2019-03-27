@@ -104,7 +104,9 @@ class List extends Component {
                                 <View style={styles.collapseHeaderStyle}>
                                     <Text>{section}</Text>
                                     <Icon
-                                        name='keyboard-arrow-down'
+                                        name={!activeSections.includes(sections.indexOf(section))
+                                            || list.filter(item => item.status === checkBoxStates[checkBoxStates.length - 1]).length === 0 ?
+                                            'keyboard-arrow-up' : 'keyboard-arrow-down'}
                                     />
                                 </View>
                             );
@@ -126,11 +128,14 @@ class List extends Component {
                         onPressDelete={(event, element) => this.handleOnEditDelete(element)}
                     />}
                 </ScrollView>
-                <Button
-                    onPress={this.onPressedAddElement}
-                    title='Add new'
+                <Icon
+                    name='add'
+                    color='#6200EE'
                     containerStyle={styles.buttonStyle}
-                    accessibilityLabel='Add new TODO element'
+                    size={25}
+                    raised={true}
+                    reverse={true}
+                    onPress={this.onPressedAddElement}
                 />
             </>
 		);
@@ -138,11 +143,10 @@ class List extends Component {
 }
 const styles = StyleSheet.create({
     buttonStyle: {
-        backgroundColor: '#841584',
         position: 'absolute',
         alignSelf: 'flex-end',
-        right: '5%',
-        bottom: '5%'
+        right: '2%',
+        bottom: '2%'
     },
     collapseHeaderStyle: {
         width: width,
@@ -159,7 +163,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     scrollViewStyle: {
-        top: '5%',
         width: '100%',
         height: height,
         backgroundColor: '#F1F1F1'

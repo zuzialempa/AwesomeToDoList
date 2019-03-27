@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import List from './screens/List';
+import AppBar from './components/AppBar';
 
 export default class App extends React.Component {
 	render () {
 		return (
 			<View style={styles.container}>
+				<AppBar/>
 				<List/>
 			</View>
 		);
