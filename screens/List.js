@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions, View, Text, ScrollView } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
-import { Button, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import StatedCheckBoxList from '../components/StatedCheckBoxList';
 import AddNewOverlay from '../components/AddNewOverlay';
 import EditOverlay from '../components/EditOverlay';
@@ -12,9 +12,6 @@ const defaultObject = {
     id: -1
 };
 const {height, width} = Dimensions.get('window');
-const sections = [
-    'done'
-];
 
 class List extends Component {
 	constructor (props){
@@ -27,12 +24,7 @@ class List extends Component {
         this.handleOnCheckboxPress = this.handleOnCheckboxPress.bind(this);
         this.handleLongPress = this.handleLongPress.bind(this);
         this.state = {
-            list: [
-                {text: 'example', id: 0, status: checkBoxStates[0]},
-                {text: 'example', id: 1, status: checkBoxStates[0]},
-                {text: 'example', id: 2, status: checkBoxStates[0]},
-                {text: 'example', id: 3, status: checkBoxStates[0]}
-            ],
+            list: [ ],
             addNewVisibility: false,
             addEditVisibility: false,
             activeSections: [],
@@ -87,57 +79,58 @@ class List extends Component {
         );
     }
 	render (){
-        const { list, addNewVisibility, longPressedCheckBox, addEditVisibility, activeSections } = this.state;
+		const { list, addNewVisibility, longPressedCheckBox, addEditVisibility, activeSections } = this.state;
+		const sections = [checkBoxStates.map(state => state.name)[checkBoxStates.length - 1]];
 		return (
-            <>
-                <ScrollView style={styles.scrollViewStyle} keyboardShouldPersistTaps={'handled'}>
-                    <StatedCheckBoxList
-                    titles={list.filter(item => item.status !== checkBoxStates[checkBoxStates.length - 1])}
-                        handleOnPress={this.handleOnCheckboxPress}
-                        handleLongPress={this.handleLongPress}
-                    />
-                    <Accordion
-                        sections={sections}
-                        activeSections={activeSections}
-                        renderHeader={(section) => {
-                            return (
-                                <View style={styles.collapseHeaderStyle}>
-                                    <Text>{section}</Text>
-                                    <Icon
-                                        name={!activeSections.includes(sections.indexOf(section))
-                                            || list.filter(item => item.status === checkBoxStates[checkBoxStates.length - 1]).length === 0 ?
-                                            'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                                    />
-                                </View>
-                            );
-                        }}
-                        underlayColor='#DCDCDC'
-                        renderContent={this.childToRender}
-                        onChange={(activeSections) => {
-                            this.setState({ activeSections });
-                        }}
-                    />
-                    {addNewVisibility && <AddNewOverlay
-                        isVisible={addNewVisibility}
-                        onPressDone={this.onPressDoneAtAddNew}
-                    />}
-                    {addEditVisibility && <EditOverlay
-                        isVisible={longPressedCheckBox.text !== ''}
-                        title={longPressedCheckBox}
-                        onPressDone={(event, element) => this.handleOnEditDone(element)}
-                        onPressDelete={(event, element) => this.handleOnEditDelete(element)}
-                    />}
-                </ScrollView>
-                <Icon
-                    name='add'
-                    color='#6200EE'
-                    containerStyle={styles.buttonStyle}
-                    size={25}
-                    raised={true}
-                    reverse={true}
-                    onPress={this.onPressedAddElement}
-                />
-            </>
+				<>
+					<ScrollView style={styles.scrollViewStyle} keyboardShouldPersistTaps={'handled'}>
+						<StatedCheckBoxList
+							titles={list.filter(item => item.status !== checkBoxStates[checkBoxStates.length - 1])}
+							handleOnPress={this.handleOnCheckboxPress}
+							handleLongPress={this.handleLongPress}
+						/>
+						<Accordion
+							sections={sections}
+							activeSections={activeSections}
+							renderHeader={(section) => {
+								return (
+										<View style={styles.collapseHeaderStyle}>
+											<Text>{section}</Text>
+											<Icon
+												name={!activeSections.includes(sections.indexOf(section))
+													|| list.filter(item => item.status === checkBoxStates[checkBoxStates.length - 1]).length === 0 ?
+													'keyboard-arrow-up' : 'keyboard-arrow-down'}
+											/>
+										</View>
+									);
+								}}
+							underlayColor='#DCDCDC'
+							renderContent={this.childToRender}
+							onChange={(activeSections) => {
+							this.setState({ activeSections });
+							}}
+						/>
+						{addNewVisibility && <AddNewOverlay
+						isVisible={addNewVisibility}
+						onPressDone={this.onPressDoneAtAddNew}
+						/>}
+						{addEditVisibility && <EditOverlay
+						isVisible={longPressedCheckBox.text !== ''}
+						title={longPressedCheckBox}
+						onPressDone={(event, element) => this.handleOnEditDone(element)}
+						onPressDelete={(event, element) => this.handleOnEditDelete(element)}
+						/>}
+					</ScrollView>
+					<Icon
+						name='add'
+						color='#6200EE'
+						containerStyle={styles.buttonStyle}
+						size={25}
+						raised={true}
+						reverse={true}
+						onPress={this.onPressedAddElement}
+					/>
+				</>
 		);
 	}
 }
